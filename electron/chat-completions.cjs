@@ -1,4 +1,4 @@
-// Shared by the providers that speak the OpenAI-style Chat Completions API (OpenRouter and custom endpoints).
+// Shared by the providers that speak the OpenAI-style Chat Completions API (custom endpoints).
 
 function providerError(name, status, detail = {}) {
   if (status === 401) return new Error(`${name} rejected this key. Check your API key in Settings.`);

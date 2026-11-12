@@ -2,7 +2,6 @@ import { clearRecognizedText } from "./recent";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Modal } from "./Dialogs";
 import { CLAUDE_CODE_URL, PROVIDERS, savedProvider, saveAiPreference, signInChatGPT, USAGE_URL, type AiProvider } from "./ai";
-import { OpenRouterSettings } from "./OpenRouterSettings";
 import { CustomEndpointSettings } from "./CustomEndpointSettings";
 import { updateSummary } from "./updates";
 import { ScanLanguagePicker } from "./ScanLanguagePicker";
@@ -257,8 +256,6 @@ export function SettingsDialog({ initialSection = "General", theme, onTheme, nig
             >
               <button className="btn ghost" disabled={!aiStatus} onClick={async () => setAiStatus({ ...aiStatus!, claude: await ai!.recheckClaude() })}>Check again</button>
             </Row>}
-            {provider === "openrouter" && (aiStatus ? <OpenRouterSettings ai={ai} configured={!!aiStatus.openrouter?.configured}
-              onConfigured={configured => setAiStatus({ ...aiStatus, openrouter: { configured } })} /> : <p className="settings-hint">Checking connection…</p>)}
             {provider === "custom" && (aiStatus ? <CustomEndpointSettings ai={ai} status={aiStatus.custom}
               onStatus={custom => setAiStatus({ ...aiStatus, custom })} /> : <p className="settings-hint">Checking connection…</p>)}
           </section>

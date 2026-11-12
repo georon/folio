@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { saveAiPreference } from "./ai";
-import { ModelPicker } from "./OpenRouterSettings";
+import { ModelPicker } from "./ModelPicker";
 
 // Model IDs vary by server ("llama3.1:8b", "glm-5", "accounts/x/models/y"); only spaces and control characters are ruled out.
 const MODEL_ID = /^[\x21-\x7e]{1,256}$/;

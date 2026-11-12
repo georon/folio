@@ -11,20 +11,40 @@ const installFolders = (platform, home) =>
 // package's native claude.exe, which npm keeps at this path inside the same folder.
 const NPM_WINDOWS_EXE = path.join("node_modules", "@anthropic-ai", "claude-code", "bin", "claude.exe");
 const isFile = (file) => { try { return fs.statSync(file).isFile(); } catch { return false; } };
+const subfolders = (dir) => { try { return fs.readdirSync(dir, { withFileTypes: true }).filter((e) => e.isDirectory()).map((e) => e.name); } catch { return []; } };
+
+// Claude for Windows signs in once and keeps its own copy of Claude Code at
+// %APPDATA%\Claude\claude-code\<version>\<build>\claude.exe, replacing it as it updates. Use the newest version there.
+const newestFirst = (a, b) => {
+  const x = a.split(".").map(Number), y = b.split(".").map(Number);
+  for (let i = 0; i < Math.max(x.length, y.length); i++) if ((x[i] ?? 0) !== (y[i] ?? 0)) return (y[i] ?? 0) - (x[i] ?? 0);
+  return 0;
+};
+function desktopAppClaude(appData) {
+  if (!appData || !path.isAbsolute(appData)) return null;
+  const root = path.join(appData, "Claude", "claude-code");
+  for (const version of subfolders(root).filter((v) => /^\d+(\.\d+)*$/.test(v)).sort(newestFirst)) {
+    for (const build of subfolders(path.join(root, version))) {
+      const exe = path.join(root, version, build, "claude.exe");
+      if (isFile(exe)) return exe;
+    }
+  }
+  return null;
+}
 
 /**
  * Searches absolute folders only (never the current folder, which `where.exe` checks first), with Claude Code's default
  * install location first. Only native executables on Windows: .cmd/.bat shims would need a shell, so for an npm shim
- * Folio runs the claude.exe it points to instead.
+ * Folio runs the claude.exe it points to instead. On Windows, the copy inside the Claude desktop app is the last resort.
  */
-function findClaude({ platform, home, envPath, extraFolders = installFolders(platform, home) }) {
+function findClaude({ platform, home, envPath, appData, extraFolders = installFolders(platform, home) }) {
   const dirs = [path.join(home, ".local", "bin"), ...String(envPath ?? "").split(path.delimiter), ...extraFolders]
     .map((d) => d.trim().replace(/^"|"$/g, ""))
     .filter((d) => d && path.isAbsolute(d));
   const candidates = platform === "win32"
     ? dirs.flatMap((d) => [path.join(d, "claude.exe"), ...(isFile(path.join(d, "claude.cmd")) ? [path.join(d, NPM_WINDOWS_EXE)] : [])])
     : dirs.map((d) => path.join(d, "claude"));
-  return candidates.find(isFile) ?? null;
+  return candidates.find(isFile) ?? (platform === "win32" ? desktopAppClaude(appData) : null);
 }
 
 /** An npm install's `claude` starts with `#!/usr/bin/env node`, and that `node` usually sits in the same folder. */

@@ -100,6 +100,22 @@ test("Windows finds the claude.exe behind an npm install's claude.cmd shim", (t)
   assert.equal(findClaude({ platform: "darwin", home: path.join(root, "nobody"), envPath: npm, extraFolders: [] }), null);
 });
 
+test("Windows falls back to the newest Claude Code inside the Claude desktop app", (t) => {
+  const root = folder(t), home = path.join(root, "home"), appData = path.join(root, "AppData", "Roaming");
+  const bundled = path.join(appData, "Claude", "claude-code");
+  assert.equal(findClaude({ platform: "win32", home, envPath: "", appData }), null);
+  fakeClaude(path.join(bundled, "2.1.9", "aaaa"), "claude.exe");
+  fakeClaude(path.join(bundled, "2.1.321", "empty"), "notes.txt");
+  const newest = fakeClaude(path.join(bundled, "2.1.321", "d0e23af87588"), "claude.exe");
+  fakeClaude(path.join(bundled, "latest", "x"), "claude.exe");
+  assert.equal(findClaude({ platform: "win32", home, envPath: "", appData }), newest);
+  // A separately installed Claude Code comes first, and other platforms and relative folders don't use this layout.
+  const own = fakeClaude(path.join(home, ".local", "bin"), "claude.exe");
+  assert.equal(findClaude({ platform: "win32", home, envPath: "", appData }), own);
+  assert.equal(findClaude({ platform: "darwin", home: path.join(root, "nobody"), envPath: "", appData, extraFolders: [] }), null);
+  assert.equal(findClaude({ platform: "win32", home: path.join(root, "nobody"), envPath: "", appData: "AppData" }), null);
+});
+
 test("an npm shim in a relative PATH entry is still ignored", (t) => {
   const root = folder(t), home = path.join(root, "home");
   fakeClaude(path.join(root, "npm"), "claude.cmd");

@@ -1,38 +1,32 @@
 # Folio
 
-A fast, clean PDF reader for Windows, macOS, and Linux. Read, highlight, annotate, sign, and ask AI about your
-documents. Free and open source, with no Folio account required.
+A fast, clean PDF reader for Windows, macOS, and Linux. Read, highlight, annotate, sign, and ask AI about your documents. Free and open source, with no Folio account required.
+
+Forked with thanks, from https://github.com/Forward-Future/folio
 
 ![Folio with the Ask AI panel open, answering a question about the document with page citations](docs/screenshots/ask-ai.png)
 
-| Highlights and notes | Search |
-| --- | --- |
+| Highlights and notes                                                                                          | Search                                                                                                                            |
+| ------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
 | ![Color highlights in a document, with their notes in the sidebar](docs/screenshots/highlights-and-notes.png) | ![Searching a document in the dark theme, with every match highlighted and a list of matching pages](docs/screenshots/search.png) |
 
-## Download
+## How to
 
-| Platform | Download | Updates |
-| --- | --- | --- |
-| **Windows** 10/11 (64-bit) | [Folio-Setup.exe](https://github.com/Forward-Future/folio-releases/releases/latest/download/Folio-Setup.exe) | Automatic |
-| **macOS** 12 or later (Apple Silicon and Intel) | [Folio-mac.dmg](https://github.com/Forward-Future/folio-releases/releases/latest/download/Folio-mac.dmg) | Folio tells you when a new version is out |
-| **Linux**: Ubuntu, Debian, and derivatives (64-bit) | [Folio-linux-amd64.deb](https://github.com/Forward-Future/folio-releases/releases/latest/download/Folio-linux-amd64.deb) | Automatic, with your system updates (apt) |
-| **Linux**: other distributions (64-bit) | [Folio-linux-x86_64.AppImage](https://github.com/Forward-Future/folio-releases/releases/latest/download/Folio-linux-x86_64.AppImage) | Automatic |
+### Build
 
-[All releases](https://github.com/Forward-Future/folio-releases/releases) · [Changelog](CHANGELOG.md) · Prefer not to
-install on Windows? **Folio-Portable.exe** on the release page runs as-is (it doesn't auto-update).
+npm run build
 
-Folio's builds aren't signed with paid developer certificates yet, so the first launch needs one extra step:
+### Run in browser
 
-- **Windows:** if SmartScreen warns, choose **More info → Run anyway**.
-- **macOS:** open the DMG and drag Folio to Applications. The first time you open it, macOS says it can't verify the
-  developer: click **Done**, then go to **System Settings → Privacy & Security** and click **Open Anyway**.
-- **Linux (.deb):** `sudo apt install ./Folio-linux-amd64.deb`, then open Folio from your applications menu. The
-  package adds Folio's signed apt repository, so new versions arrive with your regular system updates (or
-  `sudo apt update && sudo apt upgrade`). Copies installed from a .deb before 1.9 need the new .deb installed once.
-- **Linux (AppImage):** make it executable (`chmod +x Folio-linux-x86_64.AppImage`) and run it. AppImages need FUSE 2:
-  `sudo apt install libfuse2t64` on Ubuntu 24.04 or later, `libfuse2` on older releases.
+npm run dev
 
-Or build Folio yourself from source (below).
+### Run as app
+
+node node_modules/electron/install.js
+
+npm run app
+
+The original project has prebuilt binaries, but I trust this more, although it is nerdier.
 
 ## Features
 
@@ -153,7 +147,7 @@ Choose **Sign** in the toolbar to add a signature.
 ### Ask AI about a document
 
 - **Choose a provider:** use your ChatGPT plan, your Claude subscription through
-  [Claude Code](https://claude.com/claude-code), your own OpenRouter API key, or any OpenAI-compatible endpoint, such as
+  [Claude Code](https://claude.com/claude-code), or any OpenAI-compatible endpoint, such as
   another provider's API or a model running on your computer.
 - **Whole-document or passage questions:** open the Ask AI panel from the toolbar, select text and choose **Ask AI**,
   or ask about an existing highlight.
@@ -210,7 +204,6 @@ Use **Ask AI** to connect providers and **Storage** to manage saved annotations,
 **About Folio** shows the version, installed/portable edition, and installation location, with a shortcut to open that folder.
 
 <p>
-  <a href="docs/screenshots/openrouter-setup.png"><img src="docs/screenshots/openrouter-setup.png" width="395" alt="Ask AI settings with OpenRouter selected and a field for an API key"></a>
   <a href="docs/screenshots/stored-data.png"><img src="docs/screenshots/stored-data.png" width="380" alt="Storage settings with separate controls for clearing saved annotations and Ask AI conversations"></a>
 </p>
 
@@ -228,24 +221,24 @@ Use **Ask AI** to connect providers and **Storage** to manage saved annotations,
 
 On macOS, use `⌘` wherever this table says `Ctrl`. Press `?` with a document open for in-app help.
 
-| Action | Shortcut |
-| --- | --- |
-| Open a PDF / open a URL | `Ctrl+O` / `Ctrl+Shift+O` |
-| New tab / close tab | `Ctrl+T` / `Ctrl+W` |
-| Next tab / previous tab (Control on all platforms) | `Control+Tab` / `Control+Shift+Tab` |
-| Find / next match / previous match | `Ctrl+F` / `Enter` / `Shift+Enter` |
-| Back / forward through links | `Alt+←` / `Alt+→` (`⌥←` / `⌥→` on macOS) |
-| Highlight selection or enter Highlight mode / write a note | `H` / `N` |
-| Remove a clicked highlight | `Delete` |
-| Select / draw / add text | `V` / `D` / `T` |
-| Undo / redo annotation edits | `Ctrl+Z` / `Ctrl+Shift+Z` or `Ctrl+Y` |
-| Save a copy / print | `Ctrl+S` / `Ctrl+P` |
-| Zoom in / zoom out / reset zoom | `Ctrl++` / `Ctrl+-` / `Ctrl+0` |
-| Toggle sidebar | `Ctrl+\` |
-| Rotate / toggle two-page view | `R` / `2` |
-| First page / last page | `Home` / `End` |
-| Focus mode / leave focus or current tool | `F` / `Esc` |
-| Settings / keyboard help | `Ctrl+,` / `?` |
+| Action                                                     | Shortcut                                 |
+| ---------------------------------------------------------- | ---------------------------------------- |
+| Open a PDF / open a URL                                    | `Ctrl+O` / `Ctrl+Shift+O`                |
+| New tab / close tab                                        | `Ctrl+T` / `Ctrl+W`                      |
+| Next tab / previous tab (Control on all platforms)         | `Control+Tab` / `Control+Shift+Tab`      |
+| Find / next match / previous match                         | `Ctrl+F` / `Enter` / `Shift+Enter`       |
+| Back / forward through links                               | `Alt+←` / `Alt+→` (`⌥←` / `⌥→` on macOS) |
+| Highlight selection or enter Highlight mode / write a note | `H` / `N`                                |
+| Remove a clicked highlight                                 | `Delete`                                 |
+| Select / draw / add text                                   | `V` / `D` / `T`                          |
+| Undo / redo annotation edits                               | `Ctrl+Z` / `Ctrl+Shift+Z` or `Ctrl+Y`    |
+| Save a copy / print                                        | `Ctrl+S` / `Ctrl+P`                      |
+| Zoom in / zoom out / reset zoom                            | `Ctrl++` / `Ctrl+-` / `Ctrl+0`           |
+| Toggle sidebar                                             | `Ctrl+\`                                 |
+| Rotate / toggle two-page view                              | `R` / `2`                                |
+| First page / last page                                     | `Home` / `End`                           |
+| Focus mode / leave focus or current tool                   | `F` / `Esc`                              |
+| Settings / keyboard help                                   | `Ctrl+,` / `?`                           |
 
 ### Current limits
 
@@ -273,10 +266,6 @@ Then pick a provider at the top of the panel:
   [ChatGPT settings](https://chatgpt.com/settings/usage). Sign out, or change the default provider, in Folio's **Settings**.
 - **Claude:** install [Claude Code](https://claude.com/claude-code), run `claude` once in a terminal, and sign in with
   your Claude account (Pro or Max). Then click **Check again** in Folio. Questions use your Claude subscription.
-- **OpenRouter:** under **Settings → Ask AI**, choose OpenRouter and verify your [OpenRouter API key](https://openrouter.ai/settings/keys).
-  Search the text models or enter a model ID. OpenRouter bills your key. Reopen this section to check the connection,
-  replace the key, or remove it. If a model's context is too small for a document, choose a larger model or ask about
-  a selected passage. For passage questions Folio sends the selected passage, page number, filename and conversation.
 - **Custom endpoint:** under **Settings → Ask AI**, choose Custom endpoint and enter the base URL of any server that
   accepts OpenAI-style Chat Completions (for example `https://api.example.com/v1`, or `http://localhost:11434/v1` for
   Ollama), plus its API key if it needs one. Then pick a model from the server's list or enter a model ID. The address
@@ -293,17 +282,16 @@ network requests only to:
 
 - check GitHub for updates (installed copies; can be turned off in **Settings**),
 - download the scan language packs you choose in **Settings** from the Tesseract.js project on GitHub,
-- verify an OpenRouter key or retrieve model names during OpenRouter setup,
 - check a custom endpoint and retrieve its model names when you connect it in **Settings**,
 - open a link you give it (a webpage is loaded in a hidden, sandboxed window with its own temporary session, so no
   cookies or sign-ins are shared, and every permission is denied; its scripts run while it loads, as in any browser,
   and it's then printed to PDF), and
 - answer a question you ask in **Ask AI**. Only then, the document's text (up to about 400,000 characters), any passage
   you selected, and the conversation go to the provider you chose: OpenAI for ChatGPT, or Anthropic through your
-  installed Claude Code, OpenRouter and the provider serving your chosen OpenRouter model, or the custom endpoint you
+  installed Claude Code, or the custom endpoint you
   entered. Their privacy terms apply to that data.
 
-Folio stores an OpenRouter key or a custom endpoint's key only with operating-system credential protection. If secure storage is unavailable,
+Folio stores a custom endpoint's key only with operating-system credential protection. If secure storage is unavailable,
 enable or unlock your system key store to connect. For ChatGPT, Folio stores its sign-in tokens in its data folder (below, under `ai`), encrypted with the system's
 credential protection (Windows data protection, the macOS Keychain, or the Linux secret store; if a Linux desktop has
 no secret store, you sign in again each time Folio starts), and never exposes them to the page. For Claude, Folio runs your own Claude Code with every tool disabled;
@@ -345,7 +333,7 @@ terminal has `ELECTRON_RUN_AS_NODE=1` set, unset it first.
   custom `app://` protocol with a strict Content Security Policy, runs the page sandboxed with context isolation, opens
   PDFs from the file manager, keeps a single window, downloads links, and handles updates. `webpage.cjs` converts
   webpages to PDF. `ai.cjs` runs Ask AI (ChatGPT
-  sign-in and requests, OpenRouter and custom endpoint keys and requests, and Claude Code). Stored credentials stay in the main process.
+  sign-in and requests, custom endpoint keys and requests, and Claude Code). Stored credentials stay in the main process.
 - `scripts/release.mjs` and `.github/workflows/release-build.yml`: the release pipeline (see
   [CONTRIBUTING.md](CONTRIBUTING.md#releasing)). `scripts/smoke-test.mjs` is the cross-platform smoke test CI runs.
   `scripts/screenshots.mjs` retakes the Ask AI, highlights, and search screenshots at the top of this README (`npm run build`, then `node scripts/screenshots.mjs`).

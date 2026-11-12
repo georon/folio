@@ -1,12 +1,12 @@
 // Shared by the Ask AI panel and Settings: the providers' pages, and the ChatGPT sign-in flow.
 import { readSetting, writeSetting } from "./preferences";
 
-export const PROVIDERS = { chatgpt: "ChatGPT", claude: "Claude", openrouter: "OpenRouter", custom: "Custom endpoint" } as const;
+export const PROVIDERS = { claude: "Claude", chatgpt: "ChatGPT", custom: "Custom endpoint" } as const;
 export type AiProvider = keyof typeof PROVIDERS;
 
 export function savedProvider(): AiProvider {
   const saved = readSetting("folio:ai-provider");
-  return saved && Object.hasOwn(PROVIDERS, saved) ? saved as AiProvider : "chatgpt";
+  return saved && Object.hasOwn(PROVIDERS, saved) ? saved as AiProvider : "claude";
 }
 
 // Storage events reach the other document tabs. The local event updates the panel beside Settings.

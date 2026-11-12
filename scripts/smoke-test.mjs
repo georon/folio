@@ -15,7 +15,6 @@ import { electronPath } from "./electron-path.mjs";
 import { readerPage } from "./reader-page.mjs";
 import { checkReaderTools } from "./smoke-reader-tools.mjs";
 import { checkSignatureTargets } from "./smoke-signature-targets.mjs";
-import { checkOpenRouter } from "./smoke-openrouter.mjs";
 import { checkCustomEndpoint } from "./smoke-custom-endpoint.mjs";
 
 const root = path.resolve(import.meta.dirname, "..");
@@ -137,7 +136,6 @@ try {
   await page.keyboard.press("Escape");
   assert.equal(await page.getByRole("dialog").count(), 0);
   console.log("ok  shortcuts wait while a dialog is open");
-  await checkOpenRouter(app, page);
   await checkCustomEndpoint(app, page);
 
   const toolbar = page.getByRole("toolbar", { name: "Tools" });
